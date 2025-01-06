@@ -47,8 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _socket = IO.io(
       kIsWeb
           ? 'http://localhost:4000'
-          : Platform.isIOS
-              ? 'http://localhost:4000'
               : 'http://10.0.2.2:4000',
       IO.OptionBuilder().setTransports(['websocket']).setQuery(
           {'username': widget.username}).build(),
@@ -79,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: Consumer<HomeProvider>(
               builder: (_, provider, __) => ListView.separated(
+                itemCount: provider.messages.length,
                 padding: const EdgeInsets.all(16),
                 itemBuilder: (context, index) {
                   final message = provider.messages[index];
@@ -115,7 +114,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 separatorBuilder: (_, index) => const SizedBox(
                   height: 5,
                 ),
-                itemCount: provider.messages.length,
               ),
             ),
           ),

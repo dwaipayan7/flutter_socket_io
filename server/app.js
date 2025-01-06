@@ -2,6 +2,9 @@ import express from 'express';
 const app = express();
 import http from 'http';
 import { Server } from 'socket.io';
+import cors from 'cors';
+
+app.use(cors())
 
 const server = http.createServer(app);
 const io = new Server(server);
@@ -22,10 +25,8 @@ io.on('connection', (socket) => {
             sentAt: Date.now(),
         };
 
-        // Push the new message to the array
         messages.push(newMessage);
 
-        // Emit the updated messages array to all clients
         io.emit('message', newMessage);
     });
 });
